@@ -163,7 +163,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) fp_util_real fp_util , by(rmonth)
 
-			twoway (line fp_util_real rmonth, sort) (line fp_util rmonth), ///
+			twoway (line fp_util_real rmonth, sort) (line fp_util rmonth) ///
+			(lfit fp_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Contraceptive users", size(small)) ///
@@ -183,7 +184,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) anc_util_real anc_util , by(rmonth)
 
-			twoway (line anc_util_real rmonth, sort) (line anc_util rmonth), ///
+			twoway (line anc_util_real rmonth, sort) (line anc_util rmonth) ///
+			(lfit anc_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Antenatal care visits", size(small)) ///
@@ -203,7 +205,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) totaldel_real totaldel , by(rmonth)
 
-			twoway (line totaldel_real rmonth, sort) (line totaldel rmonth), ///
+			twoway (line totaldel_real rmonth, sort) (line totaldel rmonth) ///
+			(lfit totaldel_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Deliveries", size(small)) ///
@@ -223,7 +226,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) sc_util_real sc_util , by(rmonth)
 
-			twoway (line sc_util_real rmonth, sort) (line sc_util rmonth), ///
+			twoway (line sc_util_real rmonth, sort) (line sc_util rmonth) ///
+			(lfit sc_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Sick child visits", size(small)) ///
@@ -244,7 +248,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) vax_util_real vax_util , by(rmonth)
 
-			twoway (line vax_util_real rmonth, sort) (line vax_util rmonth), ///
+			twoway (line vax_util_real rmonth, sort) (line vax_util rmonth) ///
+			(lfit vax_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Vaccinations", size(small)) ///
@@ -266,7 +271,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) cerv_util_real cerv_util , by(rmonth)
 
-			twoway (line cerv_util_real rmonth, sort) (line cerv_util rmonth), ///
+			twoway (line cerv_util_real rmonth, sort) (line cerv_util rmonth) ///
+			(lfit cerv_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Cervical cancer screening", size(small)) ///
@@ -287,7 +293,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) breast_util_real breast_util , by(rmonth)
 
-			twoway (line breast_util_real rmonth, sort) (line breast_util rmonth), ///
+			twoway (line breast_util_real rmonth, sort) (line breast_util rmonth) ///
+			(lfit breast_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Breast cancer screening", size(small)) ///
@@ -308,7 +315,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) diab_util_real diab_util , by(rmonth)
 
-			twoway (line diab_util_real rmonth, sort) (line diab_util rmonth), ///
+			twoway (line diab_util_real rmonth, sort) (line diab_util rmonth) ///
+			(lfit diab_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Diabetes visits", size(small)) ///
@@ -329,7 +337,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 
 			collapse (sum) hyper_util_real hyper_util , by(rmonth)
 
-			twoway (line hyper_util_real rmonth, sort) (line hyper_util rmonth), ///
+			twoway (line hyper_util_real rmonth, sort) (line hyper_util rmonth) ///
+			(lfit hyper_util_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Hypertension visits", size(small)) ///
@@ -351,14 +360,16 @@ foreach x in  cs_rate  diab_qual hyper_qual {
 
 			collapse (mean) `x'_real `x' , by(rmonth)
 
-			twoway (line `x'_real rmonth, sort) (line `x' rmonth), ///
+			twoway (line `x'_real rmonth, sort) (line `x' rmonth) ///
+			(lfit `x'_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)) , ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("`x'", size(small)) ///
-			xlabel(1(1)22) xlabel(, labsize(small)) ylabel(0.2(0.2)0.8)
+			xlabel(1(1)22) xlabel(, labsize(small)) ylabel(20(20)80)
 
 			graph export "$user/$analysis/Results/graphs/`x'.pdf", replace
-		}		
+		}
+		
 ********************************************************************************
 * NUMBER OF VISITS LOST BY QUARTER OF 2020
 ********************************************************************************
