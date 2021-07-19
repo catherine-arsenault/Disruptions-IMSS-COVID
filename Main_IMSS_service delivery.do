@@ -14,6 +14,11 @@ global dofiles "/Users/acatherine/Documents/GitHub/Disruptions-IMSS-covid"
 * See GitHub repo: https://github.com/catherine-arsenault/HS-performance-during-covid-do-files
 
 * Variable creation
-do "$user/$dofiles/creation_IMSS_service delivery.do"
+do "$dofiles/creation_IMSS_service delivery.do"
 
+* Investigates correlation structures
+do  "$dofiles/analysis_IMSS_service delivery_corr_structures.do"
+
+* Regression analyses, tables, graphs and supplementary materials
+do "$dofiles/analysis_IMSS_service delivery.do"
 
