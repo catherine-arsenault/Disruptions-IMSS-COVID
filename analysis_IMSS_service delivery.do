@@ -3,7 +3,7 @@
 * Last edited May, 2021
 global user "/Users/acatherine/Dropbox (Harvard University)"
 global data "/HMIS Data for Health System Performance Covid (Mexico)"
-global analysis "/Quest Center/Active projects/HS performance Covid (internal)/Country-specific papers/Mexico"
+global analysis "SPH-Kruk Team/Quest Network/Core Research/HS performance Covid (internal)/Country-specific papers/Mexico IMSS"
 * This dataset was created by the HS performance during Covid project (created in the "format" do file)
 * See GitHub repo: https://github.com/catherine-arsenault/HS-performance-during-covid-do-files
 
@@ -28,7 +28,6 @@ sort Deleg rmonth
 
 gen postCovid = rmonth>15 // State of Emergency was March 30th, month 15. 
 
-encode Deleg , gen(deleg)
 
 * Calculating rates and merging child indicators
 replace totaldel = 0 if totaldel==.
@@ -41,7 +40,7 @@ lab var diab_qual "Proportion with controlled blood sugar"
 gen hyper_qual = (hyper_qual_num / hyper_util)*100
 lab var hyper_qual "Proportion with controlled BP"
 
-egen vax_util = rowtotal(pent_qual bcg_qual measles_qual opv3_qual rota_qual pneum_qual), m
+egen vax_util = rowtotal(pent_qual bcg_qual measles_qual rota_qual pneum_qual), m
 lab var vax_util "Total children vaccinated"
 
 egen sc_util = rowtotal (diarr_util pneum_util malnu_util), m 
@@ -68,7 +67,7 @@ gen winter= month==12 | month==1 | month==2
 * GLOBALS
 ********************************************************************************
 global maternal fp_util  anc_util totaldel cs_rate
-global child sc_util vax_util 
+global child sc_util bcg_qual pent_qual measles_qual rota_qual pneum_qual
 global chronic cerv_util breast_util diab_util diab_qual hyper_util hyper_qual 
 
 global all $maternal $child $chronic
@@ -85,7 +84,7 @@ tabstat fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util ///
 diab_util hyper_util if Deleg=="National", stat(N sum) col(s) format(%20.10f)
 
 drop if Deleg=="National" 
-
+encode Deleg , gen(deleg)
 
 save "$user/$data/Data for analysis/IMSS_service_delivery.dta", replace
 ********************************************************************************
@@ -344,7 +343,8 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 			graphregion(color(white)) title("Hypertension visits", size(small)) ///
 			xlabel(1(1)24, labsize(vsmall)) ylabel(200000(200000)1600000, labsize(vsmall))
 
-			graph export "$user/$analysis/Results/graphs/hyper_util.pdf", replace		
+			graph export "$user/$analysis/Results/graphs/hyper_util.pdf", replace	
+			
 * Rates
 foreach x in  cs_rate  diab_qual hyper_qual {
 
@@ -415,6 +415,49 @@ foreach x in fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util /
 			putexcel F`i'= `r(mean)' 
 		}
 }
-	
+********************************************************************************
+* SUPP. ANALYSIS: EFFECT ON ALL 5 VACCINES SEPARATELY
+********************************************************************************	
+* Measles vaccine
+ forval i =1/35 {
+ use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+			 drop if rmonth>15
+			 keep if del==`i'
+			 reg measles_qual rmonth , robust
+
+			u "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+			 keep if del==`i'
+			rename measles_qual measles_qual_real
+			predict measles_qual
+
+			collapse (sum) measles_qual_real measles_qual , by(rmonth)
+
+			twoway (line measles_qual_real rmonth, sort) (line measles_qual rmonth) ///
+			(lfit measles_qual_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Measles vaccinations", size(small)) 
 			
+			graph export "$user/$analysis/Results/graphs/MMR/MMR_`i'.pdf", replace
+ }		
+
+			
+* Penta vaccine
+ use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+			 drop if rmonth>15
+			 xtset deleg rmonth
+			 xtgee pent_qual rmonth , family(gaussian) ///
+				link(identity) corr(exchangeable) vce(robust)	
+
+			u "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+			rename pent_qual pent_qual_real
+			predict pent_qual
+
+			collapse (sum) pent_qual_real pent_qual , by(rmonth)
+
+			twoway (line pent_qual_real rmonth, sort) (line pent_qual rmonth) ///
+			(lfit pent_qual_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Pentavalent vaccinations", size(small)) 			
 		
