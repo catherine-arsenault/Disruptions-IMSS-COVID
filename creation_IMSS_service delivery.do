@@ -6,12 +6,12 @@
 
 u  "$user/$data/Data for analysis/IMSS_Jan19-Dec20_foranalysis.dta", clear
 
-keep Deleg year month fp_util  anc_util totaldel cs_util malnu_util ///
+keep Deleg year month population2019 population2020 fp_util  anc_util totaldel cs_util malnu_util ///
 	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
 	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
-	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num 
+	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num population*
 	
-order Deleg year month fp_util  anc_util totaldel cs_util malnu_util ///
+order Deleg year month  population2019 population2020 fp_util  anc_util totaldel cs_util malnu_util ///
 	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
 	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
 	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num 
@@ -64,6 +64,7 @@ gen winter= month==12 | month==1 | month==2
 gen quarter_20 = 2 if rmonth>=16 & rmonth<=18
 replace quarter_20 = 3 if rmonth>=19 & rmonth<=21
 replace quarter_20 = 4 if rmonth>=22 & rmonth<=24
+
 ********************************************************************************
 * GLOBALS
 ********************************************************************************
