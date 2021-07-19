@@ -7,6 +7,7 @@
 use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear 
 ********************************************************************************
 * REGRESSION ANALYSES (RISK RATIOS)
+* Linear GEE models, exchangeable correlation
 ********************************************************************************
 * Declare data to be time series panel data
 xtset deleg rmonth
@@ -376,3 +377,5 @@ replace Indic = "Rotavirus" if Indic=="rota_qual"
 metan rr lcl ucl ,  eform nooverall nobox ///
 label(namevar=Indicator) force graphregion(color(white)) ///
 xlabel(0.1, 0.5, 0.9, 1.1,  1.5) xtick (0.1, 0.5, 0.9, 1.1,  1.5) effect(RR)
+
+
