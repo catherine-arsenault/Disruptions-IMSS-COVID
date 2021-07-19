@@ -1,92 +1,10 @@
+* Analysis do file
+
 * Service delivery at IMSS during Covid 19 
 * Created by: Catherine Arsenault, Dec 2020
-* Last edited May, 2021
-global user "/Users/acatherine/Dropbox (Harvard University)"
-global data "/HMIS Data for Health System Performance Covid (Mexico)"
-global analysis "SPH-Kruk Team/Quest Network/Core Research/HS performance Covid (internal)/Country-specific papers/Mexico IMSS"
-* This dataset was created by the HS performance during Covid project (created in the "format" do file)
-* See GitHub repo: https://github.com/catherine-arsenault/HS-performance-during-covid-do-files
+* Last edited July, 2021
 
-u  "$user/$data/Data for analysis/IMSS_Jan19-Dec20_foranalysis.dta", clear
-
-keep Deleg year month fp_util  anc_util totaldel cs_util malnu_util ///
-	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
-	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
-	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num 
-	
-order Deleg year month fp_util  anc_util totaldel cs_util malnu_util ///
-	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
-	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
-	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num 
- 
-********************************************************************************
-* CREATE VARIABLES FOR ANALYSIS
-********************************************************************************
-gen rmonth= month if year==2019
-replace rmonth = month+12 if year ==2020
-sort Deleg rmonth
-
-gen postCovid = rmonth>15 // State of Emergency was March 30th, month 15. 
-
-
-* Calculating rates and merging child indicators
-replace totaldel = 0 if totaldel==.
-gen cs_rate = (cs_util/totaldel)*100
-lab var cs_rate "c-section rate %"
-
-gen diab_qual = (diab_qual_num/ diab_util)*100
-lab var diab_qual "Proportion with controlled blood sugar"
-
-gen hyper_qual = (hyper_qual_num / hyper_util)*100
-lab var hyper_qual "Proportion with controlled BP"
-
-egen vax_util = rowtotal(pent_qual bcg_qual measles_qual rota_qual pneum_qual), m
-lab var vax_util "Total children vaccinated"
-
-egen sc_util = rowtotal (diarr_util pneum_util malnu_util), m 
-lab var sc_util "Total sick child visits"
-
-* Number of months since Covid
-gen timeafter=0 
-replace time=1 if rmonth==16
-replace time=2 if rmonth==17
-replace time=3 if rmonth==18
-replace time=4 if rmonth==19
-replace time=5 if rmonth==20
-replace time=6 if rmonth==21
-replace time=7 if rmonth==22
-replace time=8 if rmonth==23
-replace time=9 if rmonth==24
-
-* Post Covid quarters
-gen spring = month>=3 & month<=5
-gen summer = month>=6 & month<=8
-gen fall = month>=9 & month<=11
-gen winter= month==12 | month==1 | month==2
-********************************************************************************
-* GLOBALS
-********************************************************************************
-global maternal fp_util  anc_util totaldel cs_rate
-global child sc_util bcg_qual pent_qual measles_qual rota_qual pneum_qual
-global chronic cerv_util breast_util diab_util diab_qual hyper_util hyper_qual 
-
-global all $maternal $child $chronic
-********************************************************************************
-* TABLE 1 DESCRIPTIVES AVERAGE SERVICES PER MONTH PRE/POST COVID
-********************************************************************************
-* Averages per month
-by postCovid, sort: tabstat $maternal if Deleg=="National", stat(mean sd) col(s)
-by postCovid, sort: tabstat $child if Deleg=="National", stat(mean sd) col(s)
-by postCovid, sort: tabstat $chronic if Deleg=="National", stat(mean sd) col(s)
-
-* Sum client visits
-tabstat fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util ///
-diab_util hyper_util if Deleg=="National", stat(N sum) col(s) format(%20.10f)
-
-drop if Deleg=="National" 
-encode Deleg , gen(deleg)
-
-save "$user/$data/Data for analysis/IMSS_service_delivery.dta", replace
+use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear 
 ********************************************************************************
 * REGRESSION ANALYSES (RISK RATIOS)
 ********************************************************************************
@@ -94,7 +12,7 @@ save "$user/$data/Data for analysis/IMSS_service_delivery.dta", replace
 xtset deleg rmonth
 
 * Call GEE, export RR to excel
-putexcel set "$user/$analysis/Results/Results Service delivery paper.xlsx", sheet(FIG1, replace)  modify
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(FIG1, replace)  modify
 putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
 local i = 2
 
@@ -114,7 +32,7 @@ foreach var of global all {
 ********************************************************************************
 * FOREST PLOT WITH RR
 ********************************************************************************
-import excel using "$user/$analysis/Results/Results Service delivery paper.xlsx", sheet(FIG1) firstrow clear
+import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(FIG1) firstrow clear
 gen rr = ln(RR)
 gen lcl= ln(LCL)
 gen ucl = ln(UCL)
@@ -230,7 +148,7 @@ xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Sick child visits", size(small)) ///
-			xlabel(1(1)24, labsize(vsmall)) ylabel(0(5000)25000, labsize(vsmall))
+			xlabel(1(1)24, labsize(vsmall)) ylabel(0(5000)20000, labsize(vsmall))
 
 			graph export "$user/$analysis/Results/graphs/sc_util.pdf", replace	
 
@@ -373,7 +291,7 @@ foreach x in  cs_rate  diab_qual hyper_qual {
 ********************************************************************************
 * NUMBER OF VISITS LOST BY QUARTER OF 2020
 ********************************************************************************
-putexcel set "$user/$analysis/Results/Results Service delivery paper.xlsx", sheet(Totallost_w season, replace)  modify
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Totallost_w season, replace)  modify
 putexcel A2 = "Indicator" B2="Observed" C2="Predicted" D2="Estimated difference" E2="LCL" F2="UCL" 
 local i = 2
 
@@ -384,7 +302,7 @@ foreach x in fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util /
 			 local i = `i'+1
 			 xtgee `x'  rmonth spring-winter if rmonth<16, family(gaussian) ///
 				       link(identity) corr(exchangeable) vce(robust) 
-			predict prd_`x' // linear predictions based on preCovid months
+			predict prd_`x' // linear predictions based on preCovid months and seasons
 			predict stdp_`x', stdp // SEs of the predictions
 			
 			keep if rmonth>15 // keeps only post-Covid months
@@ -418,6 +336,47 @@ foreach x in fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util /
 ********************************************************************************
 * SUPP. ANALYSIS: EFFECT ON ALL 5 VACCINES SEPARATELY
 ********************************************************************************	
+use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+* Descriptives: Average per month, before and during Covid
+by postCovid, sort: tabstat $vax if Deleg=="National", stat(mean sd) col(s)
+
+* Regressions
+xtset deleg rmonth
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Vaccines RR, replace)  modify
+putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
+local i = 2
+
+foreach var of global vax {
+	local i = `i'+1
+	
+	xtgee `var' i.postCovid rmonth timeafter spring-winter , family(gaussian) ///
+	link(identity) corr(exchangeable) vce(robust)	
+	
+	margins postCovid, post
+	nlcom (rr: (_b[1.postCovid]/_b[0.postCovid])) , post
+	putexcel A`i' = "`var'"
+	putexcel B`i'= (_b[rr])
+	putexcel C`i'= (_b[rr]-invnormal(1-.05/2)*_se[rr])  
+	putexcel D`i'= (_b[rr]+invnormal(1-.05/2)*_se[rr])
+}
+
+* Forest plot
+import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(SM2 Vaccines RR) firstrow clear
+gen rr = ln(RR)
+gen lcl= ln(LCL)
+gen ucl = ln(UCL)
+
+replace Indic = "BCG" if Indic=="bcg_qual"
+replace Indic = "Pentavalent" if Indic=="pent_qual"
+replace Indic = "MMR" if Indic=="measles_qual"
+replace Indic = "Pneumococcal" if Indic=="pneum_qual"
+replace Indic = "Rotavirus" if Indic=="rota_qual"
+
+metan rr lcl ucl ,  eform nooverall nobox ///
+label(namevar=Indicator) force graphregion(color(white)) ///
+xlabel(0.1, 0.5, 0.9, 1.1,  1.5) xtick (0.1, 0.5, 0.9, 1.1,  1.5) effect(RR)
+
+
 * Measles vaccine
  forval i =1/35 {
  use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
