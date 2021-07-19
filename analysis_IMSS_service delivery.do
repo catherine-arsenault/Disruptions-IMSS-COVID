@@ -30,7 +30,7 @@ foreach var of global all {
 	putexcel D`i'= (_b[rr]+invnormal(1-.05/2)*_se[rr])
 }
 ********************************************************************************
-* FOREST PLOT WITH RR
+* FOREST PLOT WITH RISK RATIOS
 ********************************************************************************
 import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(FIG1) firstrow clear
 gen rr = ln(RR)
@@ -337,6 +337,7 @@ foreach x in fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util /
 * SUPP. ANALYSIS: EFFECT ON ALL 5 VACCINES SEPARATELY
 ********************************************************************************	
 use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+
 * Descriptives: Average per month, before and during Covid
 by postCovid, sort: tabstat $vax if Deleg=="National", stat(mean sd) col(s)
 
@@ -375,48 +376,3 @@ replace Indic = "Rotavirus" if Indic=="rota_qual"
 metan rr lcl ucl ,  eform nooverall nobox ///
 label(namevar=Indicator) force graphregion(color(white)) ///
 xlabel(0.1, 0.5, 0.9, 1.1,  1.5) xtick (0.1, 0.5, 0.9, 1.1,  1.5) effect(RR)
-
-
-* Measles vaccine
- forval i =1/35 {
- use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
-			 drop if rmonth>15
-			 keep if del==`i'
-			 reg measles_qual rmonth , robust
-
-			u "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
-			 keep if del==`i'
-			rename measles_qual measles_qual_real
-			predict measles_qual
-
-			collapse (sum) measles_qual_real measles_qual , by(rmonth)
-
-			twoway (line measles_qual_real rmonth, sort) (line measles_qual rmonth) ///
-			(lfit measles_qual_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
-			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
-			xtitle("Months since January 2019", size(small)) legend(off) ///
-			graphregion(color(white)) title("Measles vaccinations", size(small)) 
-			
-			graph export "$user/$analysis/Results/graphs/MMR/MMR_`i'.pdf", replace
- }		
-
-			
-* Penta vaccine
- use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
-			 drop if rmonth>15
-			 xtset deleg rmonth
-			 xtgee pent_qual rmonth , family(gaussian) ///
-				link(identity) corr(exchangeable) vce(robust)	
-
-			u "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
-			rename pent_qual pent_qual_real
-			predict pent_qual
-
-			collapse (sum) pent_qual_real pent_qual , by(rmonth)
-
-			twoway (line pent_qual_real rmonth, sort) (line pent_qual rmonth) ///
-			(lfit pent_qual_real rmonth if rmonth>=16 & rmonth<. , lcolor(green)),  ///
-			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
-			xtitle("Months since January 2019", size(small)) legend(off) ///
-			graphregion(color(white)) title("Pentavalent vaccinations", size(small)) 			
-		
