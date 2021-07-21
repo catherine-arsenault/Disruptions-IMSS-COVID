@@ -335,7 +335,9 @@ foreach x in fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util /
 		}
 }
 ********************************************************************************
-* SUPP. ANALYSIS: EFFECT ON ALL 5 VACCINES SEPARATELY
+* SUPPLEMENTARY MATERIALS
+********************************************************************************
+*  EFFECT ON ALL 5 VACCINES SEPARATELY
 ********************************************************************************	
 use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
 
@@ -378,4 +380,56 @@ metan rr lcl ucl ,  eform nooverall nobox ///
 label(namevar=Indicator) force graphregion(color(white)) ///
 xlabel(0.1, 0.5, 0.9, 1.1,  1.5) xtick (0.1, 0.5, 0.9, 1.1,  1.5) effect(RR)
 
+********************************************************************************
+* REGRESSION ANALYSES 
+* Poisson GEE models, exposure, exchangeable correlation
+********************************************************************************
+use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+* Declare data to be time series panel data
+xtset deleg rmonth
 
+* Call GEE, export RR to excel
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Poisson, replace)  modify
+putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
+local i = 2
+
+foreach var of global all {
+	local i = `i'+1
+	
+	xtgee `var' i.postCovid rmonth timeafter spring-winter , family(poisson) ///
+	link(log) exposure(population) corr(exchangeable) vce(robust)	
+	
+	margins postCovid, post
+	nlcom (rr: (_b[1.postCovid]/_b[0.postCovid])) , post
+	putexcel A`i' = "`var'"
+	putexcel B`i'= (_b[rr])
+	putexcel C`i'= (_b[rr]-invnormal(1-.05/2)*_se[rr])  
+	putexcel D`i'= (_b[rr]+invnormal(1-.05/2)*_se[rr])
+}
+
+********************************************************************************
+* REGRESSION ANALYSES 
+* Negative binomial GEE models, exchangeable correlation
+********************************************************************************
+use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
+* Declare data to be time series panel data
+xtset deleg rmonth
+
+* Call GEE, export RR to excel
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Nbinomial, replace)  modify
+putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
+local i = 2
+
+foreach var of global all {
+	local i = `i'+1
+	
+	xtgee `var' i.postCovid rmonth timeafter spring-winter , family(nbinomial) ///
+	link(nbinomial) exposure(population) corr(exchangeable) vce(robust)	
+	
+	margins postCovid, post
+	nlcom (rr: (_b[1.postCovid]/_b[0.postCovid])) , post
+	putexcel A`i' = "`var'"
+	putexcel B`i'= (_b[rr])
+	putexcel C`i'= (_b[rr]-invnormal(1-.05/2)*_se[rr])  
+	putexcel D`i'= (_b[rr]+invnormal(1-.05/2)*_se[rr])
+}
