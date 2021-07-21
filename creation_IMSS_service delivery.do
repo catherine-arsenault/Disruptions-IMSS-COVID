@@ -68,6 +68,8 @@ replace quarter_20 = 4 if rmonth>=22 & rmonth<=24
 * Population
 gen population= population2019 if year==2019
 replace population= population2020 if year==2020
+drop population2019 population2020
+gen logpop=log(population)
 ********************************************************************************
 * GLOBALS
 ********************************************************************************
