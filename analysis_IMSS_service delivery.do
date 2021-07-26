@@ -60,7 +60,7 @@ replace Indic = "Controlled diabetes" if Indic=="diab_qual"
 replace Indic = "Hypertension" if Indic=="hyper_util"
 replace Indic = "Controlled hypertension" if Indic=="hyper_qual"
 
-metan rr lcl ucl , by(cat) nosubgroup eformn ooverall nobox ///
+metan rr lcl ucl , by(cat) nosubgroup eform nooverall nobox ///
 label(namevar=Indicator) force graphregion(color(white)) ///
 xlabel(0.1, 0.4 , 0.7, 0.9, 1.1) xtick (0.1, 0.4 , 0.7, 0.9, 1.1) effect(RR)
 
