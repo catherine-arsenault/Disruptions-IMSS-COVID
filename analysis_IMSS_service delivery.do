@@ -13,7 +13,7 @@ use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
 xtset deleg rmonth
 
 * Call GEE, export RR to excel
-putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(FIG1, replace)  modify
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul26 revisions.xlsx", sheet(FIG1, replace)  modify
 putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
 local i = 2
 
@@ -33,7 +33,7 @@ foreach var of global all {
 ********************************************************************************
 * FOREST PLOT WITH RISK RATIOS
 ********************************************************************************
-import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(FIG1) firstrow clear
+import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul26 revisions.xlsx", sheet(FIG1) firstrow clear
 gen rr = ln(RR)
 gen lcl= ln(LCL)
 gen ucl = ln(UCL)
@@ -60,9 +60,9 @@ replace Indic = "Controlled diabetes" if Indic=="diab_qual"
 replace Indic = "Hypertension" if Indic=="hyper_util"
 replace Indic = "Controlled hypertension" if Indic=="hyper_qual"
 
-metan rr lcl ucl , by(cat) nosubgroup eform nooverall nobox ///
+metan rr lcl ucl , by(cat) nosubgroup eformn ooverall nobox ///
 label(namevar=Indicator) force graphregion(color(white)) ///
-xlabel(0.1, 0.5, 0.9, 1.1) xtick (0.1, 0.5, 0.9, 1.1) effect(RR)
+xlabel(0.1, 0.4 , 0.7, 0.9, 1.1) xtick (0.1, 0.4 , 0.7, 0.9, 1.1) effect(RR)
 
 ********************************************************************************
 * FIGURE 2 GRAPHS
@@ -292,7 +292,7 @@ foreach x in  cs_rate  diab_qual hyper_qual {
 ********************************************************************************
 * NUMBER OF VISITS LOST BY QUARTER OF 2020
 ********************************************************************************
-putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Totallost_w season, replace)  modify
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul26 revisions.xlsx", sheet(Totallost_w season, replace)  modify
 putexcel A2 = "Indicator" B2="Observed" C2="Predicted" D2="Estimated difference" E2="LCL" F2="UCL" 
 local i = 2
 
@@ -346,7 +346,7 @@ by postCovid, sort: tabstat $vax if Deleg=="National", stat(mean sd) col(s)
 
 * Regressions
 xtset deleg rmonth
-putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Vaccines RR, replace)  modify
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul26 revisions.xlsx", sheet(Vaccines RR, replace)  modify
 putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
 local i = 2
 
@@ -365,18 +365,18 @@ foreach var of global vax {
 }
 
 * Forest plot
-import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(SM2 Vaccines RR) firstrow clear
+import excel using "$user/$analysis/Results/Results Service delivery paper IMSS Jul26 revisions.xlsx", sheet(Vaccines RR) firstrow clear
 gen rr = ln(RR)
 gen lcl= ln(LCL)
 gen ucl = ln(UCL)
 
-replace Indic = "BCG" if Indic=="bcg_qual"
-replace Indic = "Pentavalent" if Indic=="pent_qual"
-replace Indic = "MMR" if Indic=="measles_qual"
-replace Indic = "Pneumococcal" if Indic=="pneum_qual"
-replace Indic = "Rotavirus" if Indic=="rota_qual"
+replace Indic = "BCG vaccine" if Indic=="bcg_qual"
+replace Indic = "Third dose of the Pentavalent vaccine" if Indic=="pent_qual"
+replace Indic = "Second dose of the MMR vaccine" if Indic=="measles_qual"
+replace Indic = "Third dose of the Pneumococcal vaccine" if Indic=="pneum_qual"
+replace Indic = "Second dose of the Rotavirus vaccine" if Indic=="rota_qual"
 
-metan rr lcl ucl ,  eform nooverall nobox ///
+metan rr lcl ucl ,  eform nooverall nobox texts(200) ///
 label(namevar=Indicator) force graphregion(color(white)) ///
 xlabel(0.1, 0.5, 0.9, 1.1,  1.5) xtick (0.1, 0.5, 0.9, 1.1,  1.5) effect(RR)
 
@@ -389,7 +389,7 @@ use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
 xtset deleg rmonth
 
 * Call GEE, export RR to excel
-putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Poisson, replace)  modify
+putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul26 revisions.xlsx", sheet(Poisson, replace)  modify
 putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
 local i = 2
 
@@ -398,33 +398,6 @@ foreach var of global all {
 	
 	xtgee `var' i.postCovid rmonth timeafter spring-winter , family(poisson) ///
 	link(log) exposure(population) corr(exchangeable) vce(robust)	
-	
-	margins postCovid, post
-	nlcom (rr: (_b[1.postCovid]/_b[0.postCovid])) , post
-	putexcel A`i' = "`var'"
-	putexcel B`i'= (_b[rr])
-	putexcel C`i'= (_b[rr]-invnormal(1-.05/2)*_se[rr])  
-	putexcel D`i'= (_b[rr]+invnormal(1-.05/2)*_se[rr])
-}
-
-********************************************************************************
-* REGRESSION ANALYSES 
-* Negative binomial GEE models, exchangeable correlation
-********************************************************************************
-use "$user/$data/Data for analysis/IMSS_service_delivery.dta", clear
-* Declare data to be time series panel data
-xtset deleg rmonth
-
-* Call GEE, export RR to excel
-putexcel set "$user/$analysis/Results/Results Service delivery paper IMSS Jul14 revisions.xlsx", sheet(Nbinomial, replace)  modify
-putexcel A2 = "Indicator" B2="RR" C2="LCL" D2="UCL" 
-local i = 2
-
-foreach var of global all {
-	local i = `i'+1
-	
-	xtgee `var' i.postCovid rmonth timeafter spring-winter , family(nbinomial) ///
-	link(nbinomial) exposure(population) corr(exchangeable) vce(robust)	
 	
 	margins postCovid, post
 	nlcom (rr: (_b[1.postCovid]/_b[0.postCovid])) , post
