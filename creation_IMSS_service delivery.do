@@ -15,7 +15,10 @@ order Deleg year month  population2019 population2020 fp_util  anc_util totaldel
 	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
 	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
 	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num 
- 
+
+save "$user/$data/Data for analysis/IMSS_service_delivery_raw.dta", replace	
+// This is the dataset available on Harvard Dataverse
+
 ********************************************************************************
 * CREATE VARIABLES FOR ANALYSIS
 ********************************************************************************
@@ -86,7 +89,7 @@ by postCovid, sort: tabstat $maternal if Deleg=="National", stat(mean sd) col(s)
 by postCovid, sort: tabstat $child if Deleg=="National", stat(mean sd) col(s)
 by postCovid, sort: tabstat $chronic if Deleg=="National", stat(mean sd) col(s)
 
-* Sum client visits
+* Sum client visits // 1st paragraph results section
 tabstat fp_util  anc_util totaldel sc_util vax_util cerv_util breast_util ///
 diab_util hyper_util if Deleg=="National", stat(N sum) col(s) format(%20.10f)
 
