@@ -284,7 +284,7 @@ foreach x in  cs_rate  diab_qual hyper_qual {
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("`x'", size(small)) ///
-			xlabel(1(1)22) xlabel(, labsize(small)) ylabel(20(20)80)
+			xlabel(1(1)24) xlabel(, labsize(small)) ylabel(20(20)80)
 
 			graph export "$user/$analysis/Results/graphs/`x'.pdf", replace
 		}
