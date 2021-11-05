@@ -81,7 +81,7 @@ gen winter= month==12 | month==1 | month==2
 gen quarter_20 = 2 if rmonth>=16 & rmonth<=18
 replace quarter_20 = 3 if rmonth>=19 & rmonth<=21
 replace quarter_20 = 4 if rmonth>=22 & rmonth<=24
-gen quarter_21 = 1 if rmonth>=25 & rmonth<=27 // Jan-Mar 2021
+ quarter_21 = 1 if rmonth>=25 & rmonth<=27 // Jan-Mar 2021
 replace quarter_21 = 2 if rmonth>=28 & rmonth<=32 // April - August 2021
 
 
