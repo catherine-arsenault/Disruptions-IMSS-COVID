@@ -19,7 +19,9 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) fp_util_real fp_util , by(rmonth)
 
-			twoway (line fp_util_real rmonth, sort) (line fp_util rmonth) ///
+			twoway (scatter fp_util_real rmonth, msize(vsmall)  sort) ///
+			(line fp_util rmonth ,lpattern(dash)) ///
+			(lfit fp_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit fp_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green)) ///
 			(lfit fp_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)),  ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
@@ -42,14 +44,15 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) anc_util_real anc_util , by(rmonth)
 
-			twoway (line anc_util_real rmonth, sort) (line anc_util rmonth) ///
+			twoway (scatter anc_util_real rmonth, msize(vsmall)) (line anc_util rmonth,  lpattern(dash)) ///
+			(lfit anc_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit anc_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit anc_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xline(24, lpattern(dash) lcolor(gray)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Antenatal care visits", size(small)) ///
-			xlabel(1(1)32, labsize(small))  ylabel(50000(50000)400000, labsize(small))
+			xlabel(1(1)32, labsize(small))  ylabel(0(75000)375000, labsize(small))
 
 			graph export "$user/$analysis/Results/graphs/anc_util.pdf", replace
 * totaldel
@@ -65,7 +68,8 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) totaldel_real totaldel , by(rmonth)
 
-			twoway (line totaldel_real rmonth, sort) (line totaldel rmonth) ///
+			twoway (scatter totaldel_real rmonth, msize(vsmall)) (line totaldel rmonth,  lpattern(dash)) ///
+			(lfit totaldel rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit totaldel_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit totaldel_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
@@ -88,7 +92,8 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) sc_util_real sc_util , by(rmonth)
 
-			twoway (line sc_util_real rmonth, sort) (line sc_util rmonth) ///
+			twoway (scatter sc_util_real rmonth, msize(vsmall)) (line sc_util rmonth,  lpattern(dash)) ///
+			(lfit sc_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit sc_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit sc_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
@@ -112,7 +117,8 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) vax_util_real vax_util , by(rmonth)
 
-			twoway (line vax_util_real rmonth, sort) (line vax_util rmonth) ///
+			twoway (scatter vax_util_real rmonth, msize(vsmall)) (line vax_util rmonth,  lpattern(dash)) ///
+			(lfit vax_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit vax_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit vax_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
@@ -137,7 +143,8 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) cerv_util_real cerv_util , by(rmonth)
 
-			twoway (line cerv_util_real rmonth, sort) (line cerv_util rmonth) ///
+			twoway (scatter cerv_util_real rmonth, msize(vsmall)) (line cerv_util rmonth,  lpattern(dash)) ///
+			(lfit cerv_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit cerv_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit cerv_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
@@ -161,7 +168,9 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) breast_util_real breast_util , by(rmonth)
 
-			twoway (line breast_util_real rmonth, sort) (line breast_util rmonth) ///
+			twoway (scatter breast_util_real rmonth, msize(vsmall)) ///
+			(line breast_util rmonth,  lpattern(dash)) ///
+			(lfit breast_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit breast_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit breast_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
@@ -185,14 +194,16 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) diab_util_real diab_util , by(rmonth)
 
-			twoway (line diab_util_real rmonth, sort) (line diab_util rmonth) ///
+			twoway (scatter diab_util_real rmonth, msize(vsmall)) ///
+			(line diab_util rmonth,  lpattern(dash)) ///
+			(lfit diab_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit diab_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green)) ///
 			(lfit diab_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xline(24, lpattern(dash) lcolor(gray)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Diabetes visits", size(small)) ///
-			xlabel(1(1)32, labsize(vsmall)) ylabel(200000(200000)1400000, labsize(vsmall))
+			xlabel(1(1)32, labsize(vsmall)) ylabel(0(250000)1500000, labsize(vsmall))
 
 			graph export "$user/$analysis/Results/graphs/diab_util.pdf", replace	
 			
@@ -209,14 +220,16 @@ use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 
 			collapse (sum) hyper_util_real hyper_util , by(rmonth)
 
-			twoway (line hyper_util_real rmonth, sort) (line hyper_util rmonth) ///
+			twoway (scatter hyper_util_real rmonth, msize(vsmall)) ///
+			(line hyper_util rmonth,  lpattern(dash)) ///
+			(lfit hyper_util rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit hyper_util_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green)) ///
 			(lfit hyper_util_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
 			xline(24, lpattern(dash) lcolor(gray)) ///
 			xtitle("Months since January 2019", size(small)) legend(off) ///
 			graphregion(color(white)) title("Hypertension visits", size(small)) ///
-			xlabel(1(1)32, labsize(vsmall)) ylabel(200000(200000)1600000, labsize(vsmall))
+			xlabel(1(1)32, labsize(vsmall)) ylabel(0(350000)1800000, labsize(vsmall))
 
 			graph export "$user/$analysis/Results/graphs/hyper_util.pdf", replace	
 			
@@ -235,7 +248,8 @@ foreach x in  cs_rate  diab_qual hyper_qual {
 
 			collapse (mean) `x'_real `x' , by(rmonth)
 
-			twoway (line `x'_real rmonth, sort) (line `x' rmonth) ///
+			twoway (scatter `x'_real rmonth, msize(vsmall)) (line `x' rmonth, lpattern(dash)) ///
+			(lfit `x' rmonth if rmonth<16, lcolor(cranberry)) ///
 			(lfit `x'_real rmonth if rmonth>=16 & rmonth<=24 , lcolor(green))  ///
 			(lfit `x'_real rmonth if rmonth>=25 & rmonth<=32 , lcolor(blue)), ///
 			xline(24, lpattern(dash) lcolor(gray)) ///
