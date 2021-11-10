@@ -6,13 +6,16 @@
 global user "/Users/acatherine/Dropbox (Harvard University)"
 global data "/HMIS Data for Health System Performance Covid (Mexico)"
 global analysis "SPH-Kruk Team/Quest Network/Core Research/HS performance Covid (internal)/Country-specific papers/Mexico IMSS_updated"
+********************************************************************************
 
 u  "$user/$data/Data for analysis/IMSS_Jan19-Dec20_foranalysis.dta", clear
 keep Deleg year month population2019 population2020 fp_util  anc_util totaldel cs_util malnu_util ///
-	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
+	 diarr_util pneum_util pent_qual bcgu_qual measles_qual opv3_qual rota_qual ///
 	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
 	breast_denom2020 diab_util hyper_util diab_qual_num hyper_qual_num population*
-	
+
+rename bcgu_qual bcg_qual 
+
 order Deleg year month  population2019 population2020 fp_util  anc_util totaldel cs_util malnu_util ///
 	 diarr_util pneum_util pent_qual bcg_qual measles_qual opv3_qual rota_qual ///
 	 pneum_qual cerv_util cerv_denom2020 cerv_denom2019 breast_util breast_denom2019 ///
