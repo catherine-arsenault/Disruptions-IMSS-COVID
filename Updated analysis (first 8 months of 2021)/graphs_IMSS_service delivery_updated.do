@@ -1,11 +1,127 @@
 
-use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear 
-
-
 ********************************************************************************
 * GRAPHS
 ******************************************************************************** 
-* Volumes
+* NO TRENDS (for commentary)
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear 
+	collapse (sum) fp_util , by(rmonth)
+	twoway (line fp_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Contraceptive users", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(10000)70000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_fp_util.pdf", replace
+
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear 
+	
+	collapse (sum) anc_util , by(rmonth)
+	twoway (line anc_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Antenatal care visits", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(75000)375000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_anc_util.pdf", replace	
+			
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear		
+	collapse (sum) totaldel , by(rmonth)
+	twoway (line totaldel rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Deliveries", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(5000)45000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_totaldel.pdf", replace
+	
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear		
+	collapse (sum) sc_util , by(rmonth)
+	twoway (line sc_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Sick child visits", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(5000)20000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_sc_util.pdf", replace
+			
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear		
+	collapse (sum) vax_util , by(rmonth)
+	twoway (line vax_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Childhood vaccinations", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small))  ylabel(10000(20000)130000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_vax_util.pdf", replace
+			
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear		
+	collapse (sum) cerv_util , by(rmonth)
+	twoway (line cerv_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Cervical cancer screening", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(50000)300000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_cerv_util.pdf", replace
+	
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
+	collapse (sum) breast_util , by(rmonth)
+	twoway (line breast_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Breast cancer screening", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(20000)120000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_breast_util.pdf", replace
+	
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
+	collapse (sum) diab_util , by(rmonth)
+	twoway (line diab_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Diabetes visits", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(250000)1500000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_diab_util.pdf", replace
+	
+	use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
+	collapse (sum) hyper_util , by(rmonth)
+	twoway (line hyper_util rmonth, msize(vsmall)  sort), ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xline(28, lpattern(dash) lcolor(gray)) ytitle("") ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("Hypertension visits", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(0(350000)1800000, labsize(small))
+	
+			graph export "$user/$analysis/Results/graphs/raw_hyper_util.pdf", replace
+			
+* Rates
+foreach x in  cs_rate diab_qual hyper_qual {
+
+			 use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
+			collapse (mean)  `x' , by(rmonth)
+
+			twoway (line `x' rmonth, sort ),  ///
+			xline(28, lpattern(dash) lcolor(gray)) ///
+			ylabel(, labsize(small)) xline(15, lpattern(dash) lcolor(black)) ///
+			xtitle("Months since January 2019", size(small)) legend(off) ///
+			graphregion(color(white)) title("`x'", size(small)) ///
+			xlabel(1(1)32) xlabel(, labsize(small)) ylabel(20(20)80)
+
+			graph export "$user/$analysis/Results/graphs/raw_`x'.pdf", replace
+		}
+		
+		
+******************************************************************************** 			
+* WITH TRENDS			
 * fp_util
 			 use "$user/$data/Data for analysis/IMSS_service_delivery_updated2021.dta", clear
 			 drop if rmonth>15
