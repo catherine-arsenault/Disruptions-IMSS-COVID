@@ -35,7 +35,7 @@ qic fp_util postCovid rmonth timeafter spring-winter , i(deleg) t(rmonth) family
 	link(identity) corr(exchangeable) robust	
 
 qic fp_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
   
 
 * ANC 
@@ -46,7 +46,7 @@ qic anc_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family
 	link(identity) corr(exchangeable) robust	
 
 qic anc_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
   
 
 * Deliveries
@@ -57,7 +57,7 @@ qic totaldel postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family
 	link(identity) corr(exchangeable) robust	
 
 qic totaldel postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
   
 
 * CS rate
@@ -68,7 +68,7 @@ qic cs_rate postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(
 	link(identity) corr(exchangeable) robust	
 
 qic cs_rate postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
  
 
 * Sick child 
@@ -79,7 +79,7 @@ qic sc_util  postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family
 	link(identity) corr(exchangeable) robust	
 
 qic sc_util  postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
  
 
 * Vaccination 
@@ -90,7 +90,7 @@ qic vax_util   postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) fami
 	link(identity) corr(exchangeable) robust	
 
 qic vax_util   postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
 
 
 * Cervical cancer screening
@@ -101,7 +101,7 @@ qic cerv_util  postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) fami
 	link(identity) corr(exchangeable) robust	
 
 qic cerv_util  postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
 
 
 * Breast cancer screening
@@ -112,7 +112,7 @@ qic  breast_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) fa
 	link(identity) corr(exchangeable) robust	
 
 qic  breast_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
 
 
 * Diabetes visits
@@ -123,7 +123,7 @@ qic   diab_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) fam
 	link(identity) corr(exchangeable) robust	
 
 qic   diab_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
 
 
 *Diabetes control
@@ -134,7 +134,7 @@ qic    diab_qual postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) fa
 	link(identity) corr(exchangeable) robust	
 
 qic    diab_qual postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
  
 
 *Hypertension visits
@@ -145,7 +145,7 @@ qic     hyper_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) 
 	link(identity) corr(exchangeable) robust	
 
 qic     hyper_util postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
  
 
 *Hypertension visits
@@ -156,5 +156,5 @@ qic  hyper_qual postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) fam
 	link(identity) corr(exchangeable) robust	
 
 qic  hyper_qual postCovid rmonth timeafter spring-winter, i(deleg) t(rmonth) family(gaussian) ///
-	link(identity) corr(unstructured) robust	
+	link(identity) corr(unstructured) robust	// convergence not achieved
  
